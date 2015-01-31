@@ -7,23 +7,38 @@ var SerialPort = require('serialport').SerialPort,
 
 	express = require('express');
 
+var app = express();
+
+app.engine('html', require('ejs').renderFile);
+
+app.get('/', function (req, res) {
+  res.render('index.html');
+})
+
+var server = app.listen(3000, function () {
+
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log('Example app listening at http://%s:%s', host, port)
+
+})
+
 serialPort.on('open',function() {
 	var printer = new thermalPrinter(serialPort);
 	printer.on('ready', function() {
 
-		var app = express();
-
-		app.get('/:text', function(req, res) {
-		    var text = req.params.text;
+		app.post('/', function(req, res) {
+		    var text = req.param("text");
 		    console.log(text);
 		    printText(text);
 		});
-
-		console.log('Listneing on 3000');
-		app.listen(3000);
 		
 		function printText(text){		
 			printer
+				.lineFeed(2)
+				.bold(false)
+				.big(true)
 				.printLine(text)
 				.lineFeed(3)
 				.print(function(err){

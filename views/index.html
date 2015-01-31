@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>printshit</title>
+</head>
+<body>
+	<form action="/">
+		<textarea class="text-input" type="text" name="text"></textarea>
+		<input class="go-button" type="submit" value="Go">
+	</form>
+
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script>
+
+		$('.go-button').on('click', function(e){
+			
+			$.ajax({
+				url: "/?text="+ $('.text-input').val(),
+				type: "POST"
+			});
+
+			e.preventDefault();
+		});
+
+	</script>
+</body>
+</html>
