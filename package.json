@@ -1,0 +1,24 @@
+{
+  "name": "printshit",
+  "version": "1.0.0",
+  "description": "prints shit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zaccolley/printshit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zaccolley/printshit/issues"
+  },
+  "homepage": "https://github.com/zaccolley/printshit",
+  "dependencies": {
+    "express": "^4.11.1",
+    "serialport": "^1.4.10",
+    "thermalprinter": "^0.1.0"
+  }
+}
