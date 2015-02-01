@@ -19,7 +19,7 @@
   "dependencies": {
     "ejs": "^2.2.3",
     "express": "^4.11.1",
-    "jade": "^1.9.1",
+    "express3-handlebars": "^0.5.2",
     "serialport": "^1.4.10",
     "thermalprinter": "^0.1.0"
   }

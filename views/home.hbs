@@ -1,0 +1,33 @@
+<form action="/">
+	<textarea class="text-input" type="text" name="text"></textarea>
+	<input class="text-button" type="submit" value="Print text">
+</form>
+
+<form action="/image">
+	<input class="image-button" type="submit" value="Print image">
+</form>
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+
+	$('.image-button').on('click', function(e){
+		
+		$.ajax({
+			url: "/image",
+			type: "GET"
+		});
+
+		e.preventDefault();
+	});
+
+	$('.text-button').on('click', function(e){
+		
+		$.ajax({
+			url: "/?text="+ $('.text-input').val(),
+			type: "POST"
+		});
+
+		e.preventDefault();
+	});
+
+</script>
