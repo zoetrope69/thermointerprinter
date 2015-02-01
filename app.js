@@ -8,7 +8,11 @@ var SerialPort = require('serialport').SerialPort,
 	express = require('express'),
 	exphbs  = require('express3-handlebars'),
 
-	moment = require('moment');
+	moment = require('moment'),
+
+	Forecast = require('forecast.io'),
+	forecastConfig = require(__dirname + '/forecast-config.json'),
+	forecast = new Forecast({ APIKey: forecastConfig.apiKey });
 
 var app = express();
 
@@ -47,6 +51,68 @@ serialPort.on('open',function() {
 		    printImage(imagePath);
 		});
 
+		app.get('/weather', function(req, res) {
+
+			var location = {
+				latitude: 50.7903503,
+				longitude: -1.0661844
+			}
+
+			forecast.get(location.latitude, location.longitude, function (err, forecastRes, data) {
+				if (err) throw err;
+
+				var days = [];
+
+				daysData = data.daily.data;
+
+				daysData.forEach(function(dayData){
+
+					var day = {
+						name: moment.unix(dayData.time).format('ddd'),
+						temp: Math.floor((dayData.apparentTemperatureMin + dayData.apparentTemperatureMax) / 2),
+						summary: dayData.summary
+					};
+
+					days.push(day);
+				});
+
+				var currentDay = days[0];
+
+				printer
+					.bold(true)
+					.big(true)
+					.lineFeed(1)
+					.printLine(currentDay.name + ': ' + currentDay.temp + '°')
+					.printLine(currentDay.summary)
+					.lineFeed(2)
+					.big(false)
+					.printLine('Here is the weekly forecast:')
+					.bold(false)
+					.lineFeed(1)
+
+				days.forEach(function(day, i){
+					if(i > 0){						
+						printer
+							.printLine(day.name + ': ' + day.temp + '° - ' + day.summary)
+							.horizontalLine(32)
+					}
+				});
+
+				printer
+					.lineFeed(1)
+					.bold(true)
+					.big(true)
+					.printLine(':-)')
+					.lineFeed(3)
+
+				printer.print(function(err){						
+					if (err) throw err;
+				});
+
+			});
+
+		});
+		
 		function printText(text){		
 			printer
 				.lineFeed(2)
