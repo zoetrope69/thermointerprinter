@@ -1,4 +1,4 @@
-# printshit
+# thermointerprinter
 
 internet connected thermal printer using node and an arduino
 
