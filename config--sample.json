@@ -1,0 +1,7 @@
+{
+	"usbPath": "/dev/ttyACM0",
+	"baudrate": 19200,
+	"forecastio": {
+		"apiKey": ""
+	}
+}

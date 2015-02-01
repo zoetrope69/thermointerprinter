@@ -1,6 +1,8 @@
-var SerialPort = require('serialport').SerialPort,
-	serialPort = new SerialPort('/dev/ttyACM0', {
-		baudrate: 19200
+var config = require(__dirname + '/config.json'),
+
+	SerialPort = require('serialport').SerialPort,
+	serialPort = new SerialPort(config.usbPath, {
+		baudrate: config.baudrate
 	}),
 	
 	thermalPrinter = require('thermalprinter'),
@@ -11,8 +13,7 @@ var SerialPort = require('serialport').SerialPort,
 	moment = require('moment'),
 
 	Forecast = require('forecast.io'),
-	forecastConfig = require(__dirname + '/forecast-config.json'),
-	forecast = new Forecast({ APIKey: forecastConfig.apiKey });
+	forecast = new Forecast({ APIKey: config.forecastio.apiKey });
 
 var app = express();
 
@@ -40,9 +41,10 @@ serialPort.on('open',function() {
 	var printer = new thermalPrinter(serialPort);
 	printer.on('ready', function() {
 
+		printText('Printer online!');
+
 		app.post('/', function(req, res) {
-		    var text = req.param("text");
-		    console.log(text);
+		    var text = req.query.text;
 		    printText(text);
 		});
 
@@ -123,7 +125,7 @@ serialPort.on('open',function() {
 				.print(function(err){					
 					if (err) throw err;
 					
-					console.log(text);
+					console.log('Printing: '+ text);
 				});
 		}
 
