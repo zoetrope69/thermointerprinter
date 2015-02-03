@@ -20,7 +20,9 @@
     "ejs": "^2.2.3",
     "express": "^4.11.1",
     "express3-handlebars": "^0.5.2",
+    "gm": "^1.17.0",
     "serialport": "^1.4.10",
-    "thermalprinter": "^0.1.0"
+    "thermalprinter": "^0.1.0",
+    "webshot": "^0.15.3"
   }
 }
