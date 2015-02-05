@@ -33,13 +33,13 @@ app.use(express.static(__dirname + '/public'));
 
 app.engine('.hbs', exphbs({
 		extname: '.hbs',
-		defaultLayout: 'main'
+		defaultLayout: 'paper'
 	})
 );
 app.set('view engine', '.hbs');
 
 app.get('/', function (req, res) {
-	res.render('home.hbs');
+	res.render('home.hbs', { layout: 'main' });
 });
 
 var server = app.listen(3000, function () {
@@ -55,13 +55,13 @@ app.get('/instagram', function (req, res){
 
 	console.log('Printing instagram');
 
-	var input = __dirname + '/instagram.jpg';
+	var input = __dirname + '/public/images/instagram.jpg';
 
 	gm(input)
 		.resize(384, 384)
 		.monochrome()
 		.orderedDither('All', '1x1')
-		.write(__dirname + '/public/images/dithered.jpg', function (err){
+		.write(__dirname + '/public/images/processed/dithered.jpg', function (err){
 			if (err) throw err;
 
 			console.log('Dither image');
@@ -130,7 +130,7 @@ serialPort.on('open',function() {
 
 				var imageFormat = track.imageUrl.substr(track.imageUrl.lastIndexOf("."));
 				console.log('Image format: '+imageFormat);
-				var imagePath = __dirname + '/public/albumart'+imageFormat;
+				var imagePath = __dirname + '/public/processed/albumart'+imageFormat;
 
 				// if album art
 				if(track.imageUrl !== ''){
@@ -301,7 +301,7 @@ serialPort.on('open',function() {
 						+ ' AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
 			};
 
-			var imagePath = __dirname + 'screenshot.png';
+			var imagePath = __dirname + '/public/images/processed/screenshot.png';
 
 			webshot('http://localhost:3000/instagram', imagePath, options, function(err){
 				if (err) throw err;
@@ -338,7 +338,6 @@ serialPort.on('open',function() {
 					console.log(message);
 				});
 		}
-
 
 		function printText(text){
 			printer
