@@ -94,7 +94,7 @@ serialPort.on('open',function() {
 	printer.on('ready', function() {
 
 
-		console.log('Printer ready...')
+		console.log('Printer ready...');
 
 		// printInsta();
 		lastfmNowPlayin();
@@ -130,7 +130,7 @@ serialPort.on('open',function() {
 
 				var imageFormat = track.imageUrl.substr(track.imageUrl.lastIndexOf("."));
 				console.log('Image format: '+imageFormat);
-				var imagePath = __dirname + '/public/processed/albumart'+imageFormat;
+				var imagePath = __dirname + '/public/images/processed/albumart'+imageFormat;
 
 				// if album art
 				if(track.imageUrl !== ''){
@@ -164,6 +164,8 @@ serialPort.on('open',function() {
 								info = info.substr(0, info.length - 1 - ending.length ) + ending;
 							}
 
+							console.log('Printing...');
+
 							printer
 								.horizontalLine(32)
 								.printLine(info)
@@ -176,7 +178,6 @@ serialPort.on('open',function() {
 								.printImage(imagePath)
 
 								.printLine(moment().format('MMMM Do YYYY, h:mm:ss a'))
-								.horizontalLine(32)
 								.lineFeed(1)
 
 								.print(function(err){
