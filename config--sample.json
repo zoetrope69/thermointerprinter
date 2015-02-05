@@ -3,5 +3,10 @@
 	"baudrate": 19200,
 	"forecastio": {
 		"apiKey": ""
+	},
+	"lastfm": {
+		"username": "zaccolley",
+		"apiKey": "",
+		"secret": ""
 	}
 }
