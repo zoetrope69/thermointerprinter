@@ -1,26 +1,26 @@
 {
-  "name": "printshit",
+  "name": "thermointerprinter",
   "version": "1.0.0",
-  "description": "prints shit",
+  "description": "internet connected thermal printer using node and arduino",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zaccolley/printshit.git"
+    "url": "https://github.com/zaccolley/thermointerprinter.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/zaccolley/printshit/issues"
+    "url": "https://github.com/zaccolley/thermointerprinter/issues"
   },
-  "homepage": "https://github.com/zaccolley/printshit",
+  "homepage": "https://github.com/zaccolley/thermointerprinter",
   "dependencies": {
-    "ejs": "^2.2.3",
     "express": "^4.11.1",
     "express3-handlebars": "^0.5.2",
     "gm": "^1.17.0",
+    "request": "^2.53.0",
     "serialport": "^1.4.10",
     "thermalprinter": "^0.1.0",
     "webshot": "^0.15.3"
