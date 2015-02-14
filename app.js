@@ -1,5 +1,7 @@
 var config = require(__dirname + '/config.json'),
 
+	// printer stuff
+
 	SerialPort = require('serialport').SerialPort,
 	serialPort = new SerialPort("/dev/ttyACM0", {
 		baudrate: 19200
@@ -11,10 +13,15 @@ var config = require(__dirname + '/config.json'),
 	express = require('express'),
 	app = express(),
 	exphbs  = require('express3-handlebars'),
+	request = require('request'),
 
+	// graphics stuff
 	gm = require('gm'),
 
+	// time stuff
 	moment = require('moment'),
+
+	// api stuff
 
 	Forecast = require('forecast.io'),
 	forecast = new Forecast({ APIKey: config.forecastio.apiKey }),
@@ -24,9 +31,8 @@ var config = require(__dirname + '/config.json'),
 		api_key: config.lastfm.apiKey,    // sign-up for a key at http://www.last.fm/api
 		secret: config.lastfm.secret,
 		useragent: 'thermointerprinter'
-	}),
+	});
 
-	request = require('request');
 
 app.use(express.static(__dirname + '/public'));
 
