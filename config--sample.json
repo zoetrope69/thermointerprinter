@@ -1,6 +1,5 @@
 {
-	"usbPath": "/dev/ttyACM0",
-	"baudrate": 19200,
+	"port": 3000,
 	"forecastio": {
 		"apiKey": ""
 	},

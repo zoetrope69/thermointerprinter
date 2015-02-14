@@ -1,17 +1,18 @@
 var config = require(__dirname + '/config.json'),
 
 	SerialPort = require('serialport').SerialPort,
-	serialPort = new SerialPort(config.usbPath, {
-		baudrate: config.baudrate
+	serialPort = new SerialPort("/dev/ttyACM0", {
+		baudrate: 19200
 	}),
 
 	thermalPrinter = require('thermalprinter'),
+	Print = require(__dirname + '/print.js'),
 
 	express = require('express'),
+	app = express(),
 	exphbs  = require('express3-handlebars'),
 
 	gm = require('gm'),
-	webshot = require('webshot'),
 
 	moment = require('moment'),
 
@@ -27,10 +28,6 @@ var config = require(__dirname + '/config.json'),
 
 	request = require('request');
 
-var app = express();
-
-var port = 3000;
-
 app.use(express.static(__dirname + '/public'));
 
 app.engine('.hbs', exphbs({
@@ -44,38 +41,41 @@ app.get('/', function (req, res) {
 	res.render('home.hbs', { title: 'Messenger' });
 });
 
-var server = app.listen(port, function () {
+var server = app.listen(config.port, function(){
 
-var host = server.address().address;
-var port = server.address().port;
+	var host = server.address().address;
+	var port = server.address().port;
 
-console.log('Example app listening at http://%s:%s', host, port);
+	console.log('Example app listening at http://%s:%s', host, config.port);
 
 });
 
-serialPort.on('open',function() {
+// printer shit
+
+serialPort.on('open', function(){
 
 	var opts = {
 		maxPrintingDots: 5, // 0-255. Max heat dots, Unit (8dots), Default: 7 (64 dots)
 		heatingTime: 150, // 3-255. Heating time, Unit (10us), Default: 80 (800us)
-		heatingInterval: 200, //0-255. Heating interval, Unit (10µs), Default: 2 (20µs)
+		heatingInterval: 200 //0-255. Heating interval, Unit (10µs), Default: 2 (20µs)
 	};
 
 	/*
-		The more max heating dots, the more peak current will cost when printing,
-		the faster printing speed. The max heating dots is 8*(n+1).
+	The more max heating dots, the more peak current will cost when printing,
+	the faster printing speed. The max heating dots is 8*(n+1).
 
-		The more heating time, the more density, but the slower printing speed.
-		If heating time is too short, blank page may occur.
+	The more heating time, the more density, but the slower printing speed.
+	If heating time is too short, blank page may occur.
 
-		The more heating interval, the more clear, but the slower printing speed.
+	The more heating interval, the more clear, but the slower printing speed.
 	*/
 
 	var printer = new thermalPrinter(serialPort, opts);
 
-	printer.on('ready', function() {
-
+	printer.on('ready', function(){
 		console.log('Printer ready...');
+
+		print = Print(printer);
 
 		app.post('/', function(req, res){
 			var data = {
@@ -83,24 +83,29 @@ serialPort.on('open',function() {
 				message: req.query.message,
 				lastfm: req.query.lastfm,
 				instagram: req.query.instagram,
-				weather: req.query.weather
+				weather: req.query.weather,
+				time: moment().format('MMMM Do YYYY, h:mm:ss a')
 			};
 
 			if(data.lastfm){
 				// print lastfm
-				printRoute('lastfm');
-				res.send('Last.FM sent to print!');
+				print.url('http://localhost:'+config.port+'/lastfm', function(){
+					res.send('Last.FM printed!');
+				});
 			}else if(data.instagram){
 				// print instagram
-				printRoute('instagram');
-				res.send('Instagram sent to print!');
+				print.url('http://localhost:'+config.port+'/instagram', function(){
+					res.send('Instagram sent to print!');
+				});
 			}else if(data.weather){
 				// print weather
-				printRoute('weather');
-				res.send('Weather sent to print!');
+				print.url('http://localhost:'+config.port+'/weather', function(){
+					res.send('Weather sent to print!');
+				});
 			}else{
-				printMessage(data);
-				res.send('Sent!');
+				print.message(data, function(){
+					res.send('Printed!');
+				});
 			}
 
 		});
@@ -168,9 +173,6 @@ serialPort.on('open',function() {
 
 						.write(__dirname + '/public' + imagePath, function(err) {
 							if (err) throw err;
-
-							trackStream.start();
-
 						});
 
 				}else{
@@ -200,118 +202,37 @@ serialPort.on('open',function() {
 				longitude: -1.0661844
 			};
 
-			forecast.get(location.latitude, location.longitude, function (err, forecastRes, data) {
-				if (err) throw err;
-
-				var days = [];
-
-				daysData = data.daily.data;
-
-				daysData.forEach(function(dayData){
-
-					var day = {
-						name: moment.unix(dayData.time).format('ddd'),
-						temp: Math.floor((dayData.apparentTemperatureMin + dayData.apparentTemperatureMax) / 2),
-						summary: dayData.summary
-					};
-
-					days.push(day);
-				});
-
+			getWeatherForecast(location, function(days){
 				res.render('weather.hbs', { title: 'Weather', days: days, time: moment().format('MMM D YYYY h:mm a') });
-
-
 			});
 
 		});
 
-		function printRoute(route){
-
-			var options = {
-
-				screenSize: {
-					width: 384,
-					height: 480
-				},
-
-				shotSize: {
-					width: 'window',
-					height: 'all'
-				},
-
-				streamType: 'png',
-
-				defaultWhiteBackground: true,
-
-				quality: 100,
-
-				userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
-			};
-
-			var imagePath = __dirname + '/public/images/processed/screenshot.png';
-
-			webshot('http://localhost:'+port+'/'+route, imagePath, options, function(err){
-				if (err) throw err;
-
-				console.log('Saved screenshot!');
-
-				printImage(imagePath, function(){
-					console.log('Finished printing!');
-				});
-			});
-
-		}
-
-		function printMessage(data){
-
-			var name = data.name || 'Anon',
-				message = data.message || '...',
-				time = moment().format('MMMM Do YYYY, h:mm:ss a');
-
-			printer
-				.bold(true)
-				.printLine("From: "+ name)
-				.bold(false)
-				.printLine(time)
-
-				.horizontalLine(32)
-				.printLine(message)
-
-				.lineFeed(2)
-				.print(function(err){
-					if (err) throw err;
-
-					console.log('From: '+ name);
-					console.log(time);
-					console.log('----------------------------');
-					console.log(message);
-				});
-		}
-
-		function printText(text){
-			printer
-				.lineFeed(2)
-				.printLine(text)
-				.lineFeed(2)
-				.print(function(err){
-					if (err) throw err;
-
-					console.log('Printing: '+ text);
-				});
-		}
-
-		function printImage(imagePath, callback){
-			printer
-				.lineFeed(2)
-				.printImage(imagePath)
-				.lineFeed(2)
-				.print(function(err){
-					if (err) throw err;
-
-					console.log(imagePath);
-					callback();
-				});
-		}
 
 	});
+
 });
+
+function getWeatherForecast(location, callback){
+	forecast.get(location.latitude, location.longitude, function (err, forecastRes, data) {
+		if (err) throw err;
+
+		var days = [];
+
+		daysData = data.daily.data;
+
+		daysData.forEach(function(dayData){
+
+			var day = {
+				name: moment.unix(dayData.time).format('ddd'),
+				temp: Math.floor((dayData.apparentTemperatureMin + dayData.apparentTemperatureMax) / 2),
+				summary: dayData.summary
+			};
+
+			days.push(day);
+		});
+
+		callback(days);
+
+	});
+}
