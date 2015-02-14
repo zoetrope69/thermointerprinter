@@ -29,6 +29,8 @@ var config = require(__dirname + '/config.json'),
 
 var app = express();
 
+var port = 3000;
+
 app.use(express.static(__dirname + '/public'));
 
 app.engine('.hbs', exphbs({
@@ -39,36 +41,16 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 
 app.get('/', function (req, res) {
-	res.render('home.hbs', { layout: 'main' });
+	res.render('home.hbs', { title: 'Messenger' });
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(port, function () {
 
-  var host = server.address().address;
-  var port = server.address().port;
+var host = server.address().address;
+var port = server.address().port;
 
-  console.log('Example app listening at http://%s:%s', host, port);
+console.log('Example app listening at http://%s:%s', host, port);
 
-});
-
-app.get('/instagram', function (req, res){
-
-	console.log('Printing instagram');
-
-	var input = __dirname + '/public/images/instagram.jpg';
-
-	gm(input)
-		.resize(384, 384)
-		.monochrome()
-		.orderedDither('All', '1x1')
-		.write(__dirname + '/public/images/processed/dithered.jpg', function (err){
-			if (err) throw err;
-
-			console.log('Dither image');
-
-			res.render('paper.hbs');
-
-		});
 });
 
 serialPort.on('open',function() {
@@ -93,11 +75,11 @@ serialPort.on('open',function() {
 
 	printer.on('ready', function() {
 
-
 		console.log('Printer ready...');
 
-		// printInsta();
-		lastfmNowPlayin();
+		// print instagram
+		// printRoute('instagram');
+		// printRoute('lastfm');
 
 		app.post('/', function(req, res) {
 			var data = {
@@ -110,27 +92,49 @@ serialPort.on('open',function() {
 			res.send('Sent!');
 		});
 
-		function lastfmNowPlayin(){
+		app.get('/instagram', function (req, res){
+
+			console.log('Printing instagram');
+
+			var input = __dirname + '/public/images/instagram.jpg',
+				output = '/images/processed/dithered.jpg';
+
+			gm(input)
+				.resize(384, 384)
+				.monochrome()
+				.orderedDither('All', '1x1')
+				.write(__dirname + '/public' + output, function (err){
+					if (err) throw err;
+
+					console.log('Dither image');
+
+					res.render('instagram.hbs', { title: 'Instagram', imagePath: output });
+
+				});
+		});
+
+		app.get('/lastfm', function (req, res){
+
 			var trackStream = lastfm.stream(config.lastfm.username);
 
-			trackStream.on('nowPlaying', function(track) {
-				console.log(track);
-
-
+			trackStream.on('nowPlaying', function(track){
 				console.log('Paused track stream');
 				trackStream.stop();
 
 				// simplify response
-				track.imageUrl = track.image[3]['#text'];
-				track.artist = track.artist['#text'];
-				track.album = track.album['#text'];
+				track = {
+					name: track.name,
+					imageUrl: track.image[3]['#text'],
+					artist: track.artist['#text'],
+					album: track.album['#text']
+				};
 
 				console.log('Now playing: ' + track.name + ' - ' + track.artist);
 				console.log('Image URL: '+track.imageUrl);
 
 				var imageFormat = track.imageUrl.substr(track.imageUrl.lastIndexOf("."));
 				console.log('Image format: '+imageFormat);
-				var imagePath = __dirname + '/public/images/processed/albumart'+imageFormat;
+				var imagePath = '/images/processed/albumart'+imageFormat;
 
 				// if album art
 				if(track.imageUrl !== ''){
@@ -138,8 +142,7 @@ serialPort.on('open',function() {
 					console.log('Dithering album art');
 
 					var printWidth = 384,
-						borderSize = 2,
-						imageSize = printWidth - (borderSize * 2);
+						imageSize = printWidth;
 
 					gm(request(track.imageUrl), "input"+imageFormat)
 
@@ -150,73 +153,32 @@ serialPort.on('open',function() {
 
 						.orderedDither('All', '1x1')
 
-						.borderColor('black')
-						.border(borderSize, borderSize)
-
-						.write(imagePath, function(err) {
+						.write(__dirname + '/public' + imagePath, function(err) {
 							if (err) throw err;
 
-							var info = track.artist + ' - ' +  track.album;
+							trackStream.start();
 
-							// truncate with a ... ending
-							if(info.length > 32){
-								var ending = '...';
-								info = info.substr(0, info.length - 1 - ending.length ) + ending;
-							}
-
-							console.log('Printing...');
-
-							printer
-								.horizontalLine(32)
-								.printLine(info)
-
-								.big(true)
-								.printLine(wordwrap(track.name, 16))
-								.big(false)
-								.lineFeed(1)
-
-								.printImage(imagePath)
-
-								.printLine(moment().format('MMMM Do YYYY, h:mm:ss a'))
-								.lineFeed(1)
-
-								.print(function(err){
-									if (err) throw err;
-
-									console.log('Image printed');
-
-									console.log('Resumed track stream');
-									trackStream.start();
-								});
-
-								function wordwrap( str, width, brk, cut ) {
-
-									brk = brk || '\n';
-									width = width || 75;
-									cut = cut || false;
-
-									if (!str) { return str; }
-
-									var regex = '.{1,' +width+ '}(\\s|$)' + (cut ? '|.{' +width+ '}|.+$' : '|\\S+?(\\s|$)');
-
-									return str.match( RegExp(regex, 'g') ).join( brk );
-
-								}
 						});
 
 				}else{
 
 					console.log('No album art :¬(');
 
-					console.log('Resumed track stream');
-					trackStream.start();
+					imagePath = '';
 
 				}
+
+				res.render('lastfm.hbs', { title: 'Last.FM', track: track, date: moment().format('MMMM Do YYYY'), time: moment().format('h:mm:ss a'), imagePath: imagePath });
+
+				console.log('Resumed track stream');
+				trackStream.start();
+
 
 			});
 
 			trackStream.start();
-		}
+
+		});
 
 		app.get('/weather', function(req, res) {
 
@@ -243,50 +205,20 @@ serialPort.on('open',function() {
 					days.push(day);
 				});
 
-				var currentDay = days[0];
+				res.render('weather.hbs', { title: 'Weather', days: days });
 
-				printer
-					.bold(true)
-					.big(true)
-					.lineFeed(1)
-					.printLine(currentDay.name + ': ' + currentDay.temp + '°')
-					.printLine(currentDay.summary)
-					.lineFeed(2)
-					.big(false)
-					.printLine('Here is the weekly forecast:')
-					.bold(false)
-					.lineFeed(1);
-
-				days.forEach(function(day, i){
-					if(i > 0){
-						printer
-							.printLine(day.name + ': ' + day.temp + '° - ' + day.summary)
-							.horizontalLine(32);
-					}
-				});
-
-				printer
-					.lineFeed(1)
-					.bold(true)
-					.big(true)
-					.printLine(':-)')
-					.lineFeed(3);
-
-				printer.print(function(err){
-					if (err) throw err;
-				});
 
 			});
 
 		});
 
-		function printInsta(){
+		function printRoute(route){
 
 			var options = {
 
 				screenSize: {
-				width: 384,
-				height: 480
+					width: 384,
+					height: 480
 				},
 
 				shotSize: {
@@ -304,7 +236,7 @@ serialPort.on('open',function() {
 
 			var imagePath = __dirname + '/public/images/processed/screenshot.png';
 
-			webshot('http://localhost:3000/instagram', imagePath, options, function(err){
+			webshot('http://localhost:'+port+'/'+route, imagePath, options, function(err){
 				if (err) throw err;
 
 				console.log('Saved screenshot!');
