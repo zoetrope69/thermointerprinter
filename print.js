@@ -64,7 +64,7 @@ module.exports = function(printer){
 
         var name = data.name || 'Anon',
             message = data.message || '...',
-            time = data.time;
+            time = data.time || moment().format('MMMM Do YYYY, h:mm:ss a');
 
         printer
             .bold(true)

@@ -25,6 +25,16 @@ body{
     }
 }
 
+a{
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+}
+
+a:hover{
+    opacity: .8;
+}
+
 .paper-wrapper{
     max-width: 441px; /* max width of thermal paper */
     margin: 1em auto;
@@ -52,18 +62,20 @@ body{
 
 header{
     overflow: hidden; /* clearfix */
-
-    overflow: hidden;
     display: block;
+    max-height: 40px;
     padding: .25em .5em;
-    padding-right: 75px;
-    margin-bottom: .5em;
+    padding-right: 50px;
+    margin-bottom: .25em;
 
     font-size: 1.5em;
     font-weight: 400;
     color: white;
 
-    background: black url('../images/header-bg-right.png') right repeat-y;
+    background: black url('../images/header-bg-right.png');
+    background-position: top right;
+    background-repeat: repeat-y;
+    background-size: 40px;
 }
 
 header .icon{
@@ -93,14 +105,25 @@ h2{
     background: black;
 }
 
+.username,
 .details{
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
 
+.username{
+    font-style: italic;
     font-weight: 400;
+    margin-bottom: .5em;
+    border-bottom: 3px double;
     font-size: 1.25em;
+}
+
+.details{
+    font-weight: 700;
+    font-size: 1.35em;
 }
 
 img{

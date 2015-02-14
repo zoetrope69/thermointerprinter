@@ -1,39 +1,134 @@
-<h1>Printer</h1>
+<header>
+	<div class="icon"><i class="fa fa-star"></i></div>
+	<div class="time"><a href="#">thermointerprinter</a></div>
+</header>
+
+<div class="message-box"></div>
 
 <h2>Send a message</h2>
 
-<form action="/" method="POST">
+<form>
 
 	<label for="name">From</label>
-	<input class="form__name" type="text" name="name" autofocus placeholder="Anon" />
+	<input class="name" type="text" name="name" placeholder="Anon"/>
 
 	<label for="message">Message</label>
-	<textarea class="form__message" type="text" name="message" placeholder="..."></textarea>
+	<textarea class="message" type="text" name="message" placeholder="..."></textarea>
 
-	<input class="text-button" type="submit" value="Send message">
+	<input class="message-button" type="submit" value="Send message">
 
 </form>
 
 <h2>Last.FM</h2>
 
-<form action="/?lastfm=go" method="POST">
+<form>
 
-	<input type="submit" value="Print latest song from Last.FM">
+	<label for="lastfm">Username</label>
+	<input class="lastfm" type="text" name="lastfm" placeholder="zaccolley"/>
+	<input class="lastfm-button" type="submit" value="Print latest song from Last.FM">
 
 </form>
 
 <h2>Instagram</h2>
 
-<form action="/?instagram=go" method="POST">
+<form>
 
-	<input type="submit" value="Print a Instagram post">
+	<input class="instagram-button" type="submit" value="Print a Instagram post">
 
 </form>
 
 <h2>Weather</h2>
 
-<form action="/?weather=go" method="POST">
+<form>
 
-	<input type="submit" value="Print the weather">
+	<input class="instagram-buttom" type="submit" value="Print the weather">
 
 </form>
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+
+	$(document).ready(function(){
+
+		// lastfm
+		$('.lastfm-button').on('click', function(e){
+
+			var lastfm = $('.lastfm').val();
+
+			if(lastfm === ''){
+				lastfm = $('.lastfm').attr('placeholder');
+			}
+
+			$.ajax({
+				url: '/?lastfm='+lastfm,
+				type: "POST"
+			}).done(function(data){
+				console.log('Last.FM done!');
+
+				$('.lastfm').val('');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+		// instagram
+		$('.instagram-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?instagram=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('Instagram done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+
+		// weather
+		$('.weather-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?weather=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('Weather done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+		// message
+		$('.message-button').on('click', function(e){
+
+			var name = $('.name').val(),
+				message = $('.message').val();
+
+			$.ajax({
+				url: '/?name='+ name +'&message='+ message,
+				type: "POST"
+			}).done(function(data){
+				console.log('Message done!');
+
+				$('.name').val('');
+				$('.message').val('');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+	});
+
+</script>
