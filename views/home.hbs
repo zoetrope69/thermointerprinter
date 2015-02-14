@@ -1,34 +1,39 @@
-<form action="/">
+<h1>Printer</h1>
 
-	<div class="from">
-		<label for="name">From:</label>
-		<input class="form__name" type="text" name="name" autofocus placeholder="Anon" />
-	</div>
+<h2>Send a message</h2>
 
+<form action="/" method="POST">
+
+	<label for="name">From</label>
+	<input class="form__name" type="text" name="name" autofocus placeholder="Anon" />
 
 	<label for="message">Message</label>
 	<textarea class="form__message" type="text" name="message" placeholder="..."></textarea>
 
-	<input class="text-button" type="submit" value="Send">
+	<input class="text-button" type="submit" value="Send message">
 
 </form>
 
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script>
+<h2>Last.FM</h2>
 
-	$('.text-button').on('click', function(e){
+<form action="/?lastfm=go" method="POST">
 
-		var name = $('.form__name').val(),
-			message = $('.form__message').val();
+	<input type="submit" value="Print latest song from Last.FM">
 
-		$.ajax({
-			url: '/?name='+ name +'&message='+ message,
-			type: "POST"
-		}).done(function(){
-			$('.form__name').val('');
-			$('.form__message').val('');
-		});
+</form>
 
-		e.preventDefault();
-	});
-</script>
+<h2>Instagram</h2>
+
+<form action="/?instagram=go" method="POST">
+
+	<input type="submit" value="Print a Instagram post">
+
+</form>
+
+<h2>Weather</h2>
+
+<form action="/?weather=go" method="POST">
+
+	<input type="submit" value="Print the weather">
+
+</form>

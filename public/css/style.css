@@ -1,0 +1,175 @@
+*, *::before, *::after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+    /* disable anti-aliasing on fonts */
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+}
+
+html{
+    background: pink;
+}
+
+body{
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+}
+
+@media (max-width: 384px){
+    html, body{
+        width: 384px;
+        max-height: 800px;
+    }
+}
+
+.paper-wrapper{
+    max-width: 441px; /* max width of thermal paper */
+    margin: 1em auto;
+
+    background: white;
+}
+
+@media (max-width: 384px){
+    .paper-wrapper{ margin: 0 auto; }
+}
+
+.paper{
+    overflow: hidden; /* clearfix */
+    position: relative;
+    margin: 0 auto;
+    z-index: 10;
+    width: 384px; /* max width of printing area */
+    min-height: 384px;
+    max-height: 800px;
+
+    background: white;
+}
+
+/* content styles */
+
+header{
+    overflow: hidden; /* clearfix */
+
+    overflow: hidden;
+    display: block;
+    padding: .25em .5em;
+    padding-right: 75px;
+    margin-bottom: .5em;
+
+    font-size: 1.5em;
+    font-weight: 400;
+    color: white;
+
+    background: black url('../images/header-bg-right.png') right repeat-y;
+}
+
+header .icon{
+    float: left;
+}
+
+header .time{
+    float: right;
+
+    text-align: right;
+    font-size: 1em;
+}
+
+h1{
+    line-height: 1em;
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: .25em;
+}
+
+h2{
+    margin-bottom: .25em;
+    padding: 5px;
+
+    color: white;
+
+    background: black;
+}
+
+.details{
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    font-weight: 400;
+    font-size: 1.25em;
+}
+
+img{
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+span{
+    display: block;
+
+    font-size: 1.5em;
+}
+
+span:last-child{
+    margin-bottom: .25em;
+}
+
+time, p{
+    float: left;
+    padding: .5em 0;
+
+    font-size: 1.75em;
+}
+
+time{
+    width: 70%;
+}
+
+p{
+    width: 30%;
+    text-align: right;
+}
+
+q{
+    display: block;
+    padding: .5em 0;
+
+    font-size: 2em;
+}
+
+.image-full{
+    border: 3px double black;
+}
+
+form{
+    padding: 1em;
+    margin-bottom: 1em;
+
+    border-left: 4px double black;
+}
+
+form label,
+form input,
+form textarea{
+    display: block;
+    margin-bottom: .25em;
+}
+
+form input,
+form textarea{
+    padding: 5px;
+
+    background: white;
+    border: 1px solid black;
+}
+
+form input[type=submit]:hover{
+    background: black;
+    color: white;
+    cursor: pointer;
+}

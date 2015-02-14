@@ -1,21 +1,15 @@
 <header>
     <div class="icon"><i class="fa fa-lastfm"></i></div>
-    <div class="title">zaccolley</div>
+    <div class="time">{{ time }}</div>
 </header>
 
-
 <section>
-    <h1>{{ track.name }}</h1>
     <div class="details">
         {{ track.artist }} - {{ track.album }}
     </div>
+    <h1>{{ track.name }}</h1>
 </section>
 
 {{#if imagePath}}
-    <img src="{{ imagePath }}" alt="Image">
+    <img class="image-full" src="{{ imagePath }}" alt="Image">
 {{/if}}
-
-<section>
-    <span><i class="fa fa-calendar"></i> {{ date }}</span>
-    <span><i class="fa fa-clock-o"></i> {{ time }}</span>
-</section>

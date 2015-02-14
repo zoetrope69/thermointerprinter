@@ -61,8 +61,6 @@ serialPort.on('open',function() {
 		heatingInterval: 200, //0-255. Heating interval, Unit (10µs), Default: 2 (20µs)
 	};
 
-	var printer = new thermalPrinter(serialPort, opts);
-
 	/*
 		The more max heating dots, the more peak current will cost when printing,
 		the faster printing speed. The max heating dots is 8*(n+1).
@@ -73,23 +71,38 @@ serialPort.on('open',function() {
 		The more heating interval, the more clear, but the slower printing speed.
 	*/
 
+	var printer = new thermalPrinter(serialPort, opts);
+
 	printer.on('ready', function() {
 
 		console.log('Printer ready...');
 
-		// print instagram
-		// printRoute('instagram');
-		// printRoute('lastfm');
-
-		app.post('/', function(req, res) {
+		app.post('/', function(req, res){
 			var data = {
 				name: req.query.name,
 				message: req.query.message,
+				lastfm: req.query.lastfm,
+				instagram: req.query.instagram,
+				weather: req.query.weather
 			};
 
-			printMessage(data);
+			if(data.lastfm){
+				// print lastfm
+				printRoute('lastfm');
+				res.send('Last.FM sent to print!');
+			}else if(data.instagram){
+				// print instagram
+				printRoute('instagram');
+				res.send('Instagram sent to print!');
+			}else if(data.weather){
+				// print weather
+				printRoute('weather');
+				res.send('Weather sent to print!');
+			}else{
+				printMessage(data);
+				res.send('Sent!');
+			}
 
-			res.send('Sent!');
 		});
 
 		app.get('/instagram', function (req, res){
@@ -108,12 +121,12 @@ serialPort.on('open',function() {
 
 					console.log('Dither image');
 
-					res.render('instagram.hbs', { title: 'Instagram', imagePath: output });
+					res.render('instagram.hbs', { title: 'Instagram', time: moment().format('MMM D YYYY h:mm a'), imagePath: output });
 
 				});
 		});
 
-		app.get('/lastfm', function (req, res){
+		app.get('/lastfm', function(req, res) {
 
 			var trackStream = lastfm.stream(config.lastfm.username);
 
@@ -168,7 +181,7 @@ serialPort.on('open',function() {
 
 				}
 
-				res.render('lastfm.hbs', { title: 'Last.FM', track: track, date: moment().format('MMMM Do YYYY'), time: moment().format('h:mm:ss a'), imagePath: imagePath });
+				res.render('lastfm.hbs', { title: 'Last.FM', track: track, time: moment().format('MMM D YYYY h:mm a'), imagePath: imagePath });
 
 				console.log('Resumed track stream');
 				trackStream.start();
@@ -205,7 +218,7 @@ serialPort.on('open',function() {
 					days.push(day);
 				});
 
-				res.render('weather.hbs', { title: 'Weather', days: days });
+				res.render('weather.hbs', { title: 'Weather', days: days, time: moment().format('MMM D YYYY h:mm a') });
 
 
 			});
@@ -228,10 +241,11 @@ serialPort.on('open',function() {
 
 				streamType: 'png',
 
+				defaultWhiteBackground: true,
+
 				quality: 100,
 
-				userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us)'
-						+ ' AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
+				userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
 			};
 
 			var imagePath = __dirname + '/public/images/processed/screenshot.png';
@@ -241,10 +255,12 @@ serialPort.on('open',function() {
 
 				console.log('Saved screenshot!');
 
-				printImage(imagePath);
+				printImage(imagePath, function(){
+					console.log('Finished printing!');
+				});
 			});
 
-		};
+		}
 
 		function printMessage(data){
 
