@@ -86,6 +86,14 @@ header .time{
     font-size: 1em;
 }
 
+hr{
+    margin: .5em 0;
+
+    border: 0;
+    border-top: 1px solid black;
+    border-bottom: 3px double black;
+}
+
 h1{
     line-height: 1em;
     font-size: 3em;
@@ -144,22 +152,6 @@ span:last-child{
     margin-bottom: .25em;
 }
 
-time, p{
-    float: left;
-    padding: .5em 0;
-
-    font-size: 1.75em;
-}
-
-time{
-    width: 70%;
-}
-
-p{
-    width: 30%;
-    text-align: right;
-}
-
 q{
     display: block;
     padding: .5em 0;
@@ -200,6 +192,39 @@ form input[type=submit]:hover{
 }
 
 /* specific styles */
+
+.instagram time, .instagram p{
+    float: left;
+    padding: .5em 0;
+
+    font-size: 1.75em;
+}
+
+.instagram p{
+    width: 30%;
+    text-align: right;
+}
+
+.instagram time{
+    width: 70%;
+}
+
+
+.lastfm time, .lastfm p{
+    float: left;
+    padding: .5em 0;
+
+    font-size: 1.75em;
+}
+
+.lastfm p{
+    width: 30%;
+    text-align: right;
+}
+
+.lastfm time{
+    width: 70%;
+}
 
 .reddit h1{
     font-size: 1.5em;

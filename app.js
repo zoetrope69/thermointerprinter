@@ -204,9 +204,9 @@ serialPort.on('open', function(){
 
 	app.get('/word', function (req, res){
 
-		var spaceUrl = 'http://wordsmith.org/awad/rss1.xml';
+		var url = 'http://wordsmith.org/awad/rss1.xml';
 
-		request(spaceUrl, function (err, response, body){
+		request(url, function (err, response, body){
 			if (!err && response.statusCode == 200){
 				parseXmlString(body, function(err, result){
 					if (err) throw err;
