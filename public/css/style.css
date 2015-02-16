@@ -237,6 +237,7 @@ form input[type=submit]:hover{
 
 .space{
     background: url('../images/space_bg.png') center 40px  no-repeat;
+    padding-bottom: 20px;
 }
 
 .space h1{
@@ -256,8 +257,47 @@ form input[type=submit]:hover{
                  0  1px 0 white, 0  2px 0 white, 0  3px 0 white;
 }
 
-.space{
-    padding-bottom: 20px;
+.space .people li{
+    display: block;
+    padding: .5em .25em;
+    margin-bottom: .25em;
+
+    overflow: hidden; /* clearfix */
+    border-bottom: 1px dashed;
+}
+
+.space .people .name{
+    float: left;
+    width: 85%;
+    overflow: hidden;
+
+    white-space: nowrap;
+    font-size: 1.25em;
+    text-overflow: ellipsis;
+}
+
+.space .people .country{
+    float: left;
+    width: 15%;
+
+    font-size: .75em;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.space .people .title{
+    float: left;
+    width: 40%;
+    font-size: 1em;
+}
+
+.space .people .time{
+    float: left;
+    width: 60%;
+
+    font-size: .85em;
+    font-style: italic;
+    text-align: right;
 }
 
 .word h1{

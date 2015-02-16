@@ -9,8 +9,22 @@
 
 <section>
     <div class="details">There are</div>
-    <h1>{{ amount }}</h1>
+    <h1>{{ number }}</h1>
     <div class="details">people in space right now</div>
+
+    <hr>
+
+    <ul class="people">
+        {{#each people}}
+        <li>
+            <strong class="name">{{ name }}</strong>
+            <span class="country">{{ country }}</span>
+
+            <span class="title">{{ title }}</span>
+            <time class="time">{{ time }} days</time>
+        </li>
+        {{/each}}
+    </ul>
 </section>
 
 </div>

@@ -231,13 +231,24 @@ serialPort.on('open', function(){
 
 	app.get('/space', function (req, res){
 
-		var spaceUrl = 'http://howmanypeopleareinspacerightnow.com/space.json';
+		var url = 'http://howmanypeopleareinspacerightnow.com/space.json';
 
-		request(spaceUrl, function (err, response, body){
+		request(url, function (err, response, body){
 			if (!err && response.statusCode == 200){
 				var spaceData = JSON.parse(body);
 
-				res.render('space.hbs', { title: 'Space', time: moment().format('MMM D YYYY h:mm a'), amount: spaceData.number });
+				for(var i = 0; i < spaceData.people.length; i++){
+					var person = spaceData.people[i];
+
+					var launchDate = moment(person.launchdate);
+					var nowDate = moment();
+
+					var daysInSpace = moment().diff(launchDate, "days");
+
+					person.time = daysInSpace;
+				}
+
+				res.render('space.hbs', { title: 'Space', time: moment().format('MMM D YYYY h:mm a'), number: spaceData.number, people: spaceData.people });
 			}
 		});
 
