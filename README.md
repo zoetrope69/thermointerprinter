@@ -2,6 +2,8 @@
 
 internet connected thermal printer using node and an arduino
 
+__a lot of stuff based on little printer form berg__
+
 ## What you need:
 
 + [Thermal printer](http://www.hobbytronics.co.uk/thermal-printer)
@@ -20,4 +22,3 @@ internet connected thermal printer using node and an arduino
 ### print weather forecast
 
 You'll need to add your API key to the config file which you can [get from the forecast.io developer site](https://developer.forecast.io/).
-

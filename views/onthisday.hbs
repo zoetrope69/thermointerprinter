@@ -1,0 +1,24 @@
+<!-- based on https://github.com/alfo/onthisday -->
+
+<div class="onthisday">
+
+<header>
+    <div class="icon"><i class="fa fa-calendar"></i></div>
+    <div class="time">{{ time }}</div>
+</header>
+
+<section>
+    <h1>On this day</h1>
+
+    <ul class="output">
+        {{#each output}}
+            <li>
+                <strong class="year">{{{ year }}}</strong>
+                <div class="info">{{{ info }}}</div>
+            </li>
+        {{/each}}
+    </ul>
+
+</section>
+
+</div>

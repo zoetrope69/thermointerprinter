@@ -21,7 +21,6 @@ body{
 @media (max-width: 384px){
     html, body{
         width: 384px;
-        max-height: 800px;
     }
 }
 
@@ -52,8 +51,6 @@ a:hover{
     margin: 0 auto;
     z-index: 10;
     width: 384px; /* max width of printing area */
-    min-height: 384px;
-    max-height: 800px;
 
     background: white;
 }
@@ -94,15 +91,19 @@ h1{
     font-size: 3em;
     font-weight: 700;
     margin-bottom: .25em;
+    text-align: center;
 }
 
 h2{
     margin-bottom: .25em;
     padding: 5px;
 
-    color: white;
-
-    background: black;
+    color: black;
+    text-shadow: -1px 0 0 white, -2px 0 0 white, -3px 0 0 white,
+                  1px 0 0 white,  2px 0 0 white,  3px 0 0 white,
+                 0 -1px 0 white, 0 -2px 0 white, 0 -3px 0 white,
+                 0  1px 0 white, 0  2px 0 white, 0  3px 0 white;
+    background-image: url('../images/diagonal_lines_bg.png');
 }
 
 .username,
@@ -111,6 +112,7 @@ h2{
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    text-align: center;
 }
 
 .username{
@@ -195,4 +197,84 @@ form input[type=submit]:hover{
     background: black;
     color: white;
     cursor: pointer;
+}
+
+/* specific styles */
+
+.reddit h1{
+    font-size: 1.5em;
+}
+
+.reddit .details{
+    font-size: 1.25em;
+    font-weight: 400;
+}
+
+.space{
+    background: url('../images/space_bg.png') center 40px  no-repeat;
+}
+
+.space h1{
+    margin-bottom: 0;
+
+    font-size: 12em;
+    text-shadow: -1px 0 0 white, -2px 0 0 white, -3px 0 0 white, -4px 0 0 white, -5px 0 0 white,
+                  1px 0 0 white,  2px 0 0 white,  3px 0 0 white,  4px 0 0 white,  5px 0 0 white,
+                 0 -1px 0 white, 0 -2px 0 white, 0 -3px 0 white, 0 -4px 0 white, 0 -5px 0 white,
+                 0  1px 0 white, 0  2px 0 white, 0  3px 0 white, 0  4px 0 white, 0  5px 0 white;
+}
+
+.space .details{
+    text-shadow: -1px 0 0 white, -2px 0 0 white, -3px 0 0 white,
+                  1px 0 0 white,  2px 0 0 white,  3px 0 0 white,
+                 0 -1px 0 white, 0 -2px 0 white, 0 -3px 0 white,
+                 0  1px 0 white, 0  2px 0 white, 0  3px 0 white;
+}
+
+.space{
+    padding-bottom: 20px;
+}
+
+.word h1{
+    margin: .25em 0;
+    padding: 1em;
+
+    color: black;
+    text-transform: uppercase;
+    text-shadow: 0 2px 0 white, 0 4px 0 black, 0 6px white;
+
+    background: url('../images/diagonal_lines_bg.png');
+}
+
+.onthisday .output{
+    font-size: 1em;
+}
+
+.onthisday h1{
+    padding-top: .25em;
+}
+
+.onthisday .year{
+    display: block;
+    font-size: 2em;
+
+    text-align: center;
+    color: black;
+    text-shadow: -1px 0 0 white, -2px 0 0 white, -3px 0 0 white,
+                  1px 0 0 white,  2px 0 0 white,  3px 0 0 white,
+                 0 -1px 0 white, 0 -2px 0 white, 0 -3px 0 white,
+                 0  1px 0 white, 0  2px 0 white, 0  3px 0 white;
+    background-image: url('../images/diagonal_lines_bg.png');
+}
+
+.onthisday .info{
+    padding: .5em;
+
+    font-size: 1.25em;
+}
+
+.onthisday .info i,
+.onthisday .info b,
+.onthisday .info a{
+    line-height: 1em;
 }

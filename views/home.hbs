@@ -3,7 +3,7 @@
 	<div class="time"><a href="https://github.com/zaccolley/thermointerprinter">thermointerprinter</a></div>
 </header>
 
-<div class="message-box"></div>
+<div class="alert"></div>
 
 <h2>Send a message</h2>
 
@@ -37,11 +37,44 @@
 
 </form>
 
+<h2>Word of the Day</h2>
+
+<form>
+
+	<input class="word-button" type="submit" value="Print the word of the day">
+
+</form>
+
+<h2>On this day</h2>
+
+<form>
+
+	<input class="onthisday-button" type="submit" value="Print what happened on this day">
+
+</form>
+
+<h2>TIL</h2>
+
+<form>
+
+	<input class="reddit-button" type="submit" value="Print something someone learned today">
+
+</form>
+
+<h2>How many people in space?</h2>
+
+<form>
+
+	<input class="space-button" type="submit" value="Print how many people in space">
+
+</form>
+
+
 <h2>Weather</h2>
 
 <form>
 
-	<input class="instagram-buttom" type="submit" value="Print the weather">
+	<input class="weather-button" type="submit" value="Print the weather">
 
 </form>
 
@@ -49,6 +82,70 @@
 <script>
 
 	$(document).ready(function(){
+
+		// reddit
+		$('.reddit-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?reddit=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('Reddit done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+		// space
+		$('.space-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?space=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('How many people in space done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+		// onthisday
+		$('.onthisday-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?onthisday=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('On this day done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
+
+		// word
+		$('.word-button').on('click', function(e){
+
+			$.ajax({
+				url: '/?word=go',
+				type: "POST"
+			}).done(function(data){
+				console.log('Word of the Day done!');
+
+				$('.alert').html(data);
+			});
+
+			e.preventDefault();
+
+		});
 
 		// lastfm
 		$('.lastfm-button').on('click', function(e){

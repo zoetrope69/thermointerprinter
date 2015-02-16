@@ -14,6 +14,7 @@ var config = require(__dirname + '/config.json'),
 	app = express(),
 	exphbs  = require('express3-handlebars'),
 	request = require('request'),
+	parseXmlString = require('xml2js').parseString,
 
 	// graphics stuff
 	gm = require('gm'),
@@ -31,8 +32,9 @@ var config = require(__dirname + '/config.json'),
 		api_key: config.lastfm.apiKey,    // sign-up for a key at http://www.last.fm/api
 		secret: config.lastfm.secret,
 		useragent: 'thermointerprinter'
-	});
+	}),
 
+	reddit = require('redwrap');
 
 app.use(express.static(__dirname + '/public'));
 
@@ -92,6 +94,10 @@ serialPort.on('open', function(){
 			lastfm: req.query.lastfm,
 			instagram: req.query.instagram,
 			weather: req.query.weather,
+			word: req.query.word,
+			onthisday: req.query.onthisday,
+			space: req.query.space,
+			reddit: req.query.reddit
 		};
 
 		if(data.lastfm){
@@ -109,12 +115,170 @@ serialPort.on('open', function(){
 			print.url('http://localhost:'+config.port+'/weather', function(){
 				res.send('Weather forecasted and printed!');
 			});
+		}else if(data.word){
+			// print word
+			print.url('http://localhost:'+config.port+'/word', function(){
+				res.send('Word of the Day printed!');
+			});
+		}else if(data.onthisday){
+			// print onthisday
+			print.url('http://localhost:'+config.port+'/onthisday', function(){
+				res.send('On this day printed!');
+			});
+		}else if(data.space){
+			// print space
+			print.url('http://localhost:'+config.port+'/space', function(){
+				res.send('How many people in space printed!');
+			});
+		}else if(data.reddit){
+			// print reddit
+			print.url('http://localhost:'+config.port+'/reddit', function(){
+				res.send('TIL printed!');
+			});
 		}else{
 			print.message(data, function(){
 				res.send('Message sent and printed!');
 			});
 		}
 
+	});
+
+	app.get('/onthisday', function (req, res){
+
+		var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=featuredfeed&feed=onthisday&feedformat=rss';
+
+		request(wikiUrl, function (err, response, body){
+			if (!err && response.statusCode == 200){
+
+				parseXmlString(body, function(err, result){
+					if (err) throw err;
+
+					var content = result.rss.channel[0];
+
+					// Count the number of days
+					var noOfDays = content.item.length;
+					// Get the Key of today
+					var today = noOfDays - 1;
+					// Get the description of today's entry
+					var input = content.item[today].description;
+
+					var regex = /<li>(.*?)<\/li>/g;
+					var match;
+					var output = [];
+
+					while (match = regex.exec(input)){
+						output.push(match[1]);
+					}
+
+					var returnArr = [];
+
+					for(var i = 0; i < output.length; i++){
+						var item = ''+output[i];
+
+						var seperator = ' – ',
+
+							year = item.substring(0, item.indexOf(seperator)),
+							info = item.substring(item.indexOf(seperator) + seperator.length);
+
+						// Remove (pictured) from the text, as no pictures are printed
+						// info = info.replace(' (pictured)', '');
+
+						returnArr.push({
+							year: year, // Add the year
+							info: info // Add the info
+						});
+
+					}
+
+					res.render('onthisday.hbs', { title: 'On this day', time: moment().format('MMM D YYYY h:mm a'), output: returnArr });
+
+				});
+
+			}
+		});
+
+		// A simple function to remove the empty lines from the content returned by Wikipedia
+		function removeEmptyLines(string){ return string.replace('/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/g', '\n'); }
+
+	});
+
+	app.get('/word', function (req, res){
+
+		var spaceUrl = 'http://wordsmith.org/awad/rss1.xml';
+
+		request(spaceUrl, function (err, response, body){
+			if (!err && response.statusCode == 200){
+				parseXmlString(body, function(err, result){
+					if (err) throw err;
+
+					var content = result.rss.channel[0].item[0];
+
+					console.log(content);
+
+					var info = {
+						word: content.title[0],
+						desc: content.description[0],
+					};
+
+					res.render('word.hbs', { title: 'Word', time: moment().format('MMM D YYYY h:mm a'), info: info });
+
+				});
+			}
+		});
+
+
+	});
+
+	app.get('/space', function (req, res){
+
+		var spaceUrl = 'http://howmanypeopleareinspacerightnow.com/space.json';
+
+		request(spaceUrl, function (err, response, body){
+			if (!err && response.statusCode == 200){
+				var spaceData = JSON.parse(body);
+
+				res.render('space.hbs', { title: 'Space', time: moment().format('MMM D YYYY h:mm a'), amount: spaceData.number });
+			}
+		});
+
+
+	});
+
+	app.get('/reddit', function (req, res){
+
+		console.log('Printing reddit');
+
+		reddit.r('todayilearned').sort('hot').limit(1, function(err, data, redditRes){
+			if (err) throw err;
+
+			var posts = data.data.children;
+
+			for(var i = 0; i < posts.length; i++){
+				var post = posts[i].data;
+				var title = post.title;
+
+				var stickied = post.stickied;
+				var isMod = ( post.author === 'TILMods' );
+				var hasTags = title.indexOf('[') !==  -1 || title.indexOf(']') !==  -1;
+
+				// if theres no tags use the title
+				if( !hasTags && !stickied && !isMod  ){
+					title = title.replace('TIL ', ''); // remove 'TIL '
+					title =  capitaliseFirstLetter(title);
+
+					console.log(title);
+
+					res.render('reddit.hbs', { title: 'Reddit', time: moment().format('MMM D YYYY h:mm a'), postTitle: title });
+
+					break;
+				}
+			}
+
+			function capitaliseFirstLetter(string){
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			}
+
+		});
 	});
 
 	app.get('/instagram', function (req, res){
@@ -139,6 +303,7 @@ serialPort.on('open', function(){
 	});
 
 	app.get('/lastfm', function(req, res){
+		console.log('Username via param:', req.query.username);
 		var username = req.query.username || config.lastfm.username;
 
 		var trackStream = lastfm.stream(username);
@@ -181,6 +346,12 @@ serialPort.on('open', function(){
 
 					.write(__dirname + '/public' + imagePath, function(err) {
 						if (err) throw err;
+
+						res.render('lastfm.hbs', { title: 'Last.FM', username: username, track: track, time: moment().format('MMM D YYYY H:mm'), imagePath: imagePath });
+
+						console.log('Resumed track stream');
+						trackStream.start();
+
 					});
 
 			}else{
@@ -189,12 +360,12 @@ serialPort.on('open', function(){
 
 				imagePath = '';
 
+				res.render('lastfm.hbs', { title: 'Last.FM', username: username, track: track, time: moment().format('MMM D YYYY H:mm'), imagePath: imagePath });
+
+				console.log('Resumed track stream');
+				trackStream.start();
+
 			}
-
-			res.render('lastfm.hbs', { title: 'Last.FM', username: username, track: track, time: moment().format('MMM D YYYY H:mm'), imagePath: imagePath });
-
-			console.log('Resumed track stream');
-			trackStream.start();
 
 
 		});

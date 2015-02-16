@@ -20,9 +20,11 @@
     "express": "^4.11.1",
     "express3-handlebars": "^0.5.2",
     "gm": "^1.17.0",
+    "redwrap": "0.0.4",
     "request": "^2.53.0",
     "serialport": "^1.4.10",
     "thermalprinter": "^0.1.0",
-    "webshot": "^0.15.3"
+    "webshot": "^0.15.3",
+    "xml2js": "^0.4.5",
   }
 }
