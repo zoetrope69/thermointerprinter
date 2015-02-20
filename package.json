@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "internet connected thermal printer using node and arduino",
   "main": "index.js",
-  "author": "Zac Colley",
+  "author": {
+    "name": "Zac Colley",
+    "email": "hi@zaccolley.com",
+    "web": "http://zaccolley.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/zaccolley/thermointerprinter.git"
