@@ -16,8 +16,9 @@ __a lot of stuff based on little printer form berg__
 1. Set up Arduino
 2. [Set-up your thermal printer](https://learn.adafruit.com/mini-thermal-receipt-printer) ![Visual set-up](/images/setup.png)
 3. Copy the `forecast-config--sample.json` to `forecast-config.json`
-4. `npm install` install dependancies
-5. `node app.js` runs a express site on [:3000](http://localhost:3000)
+4. Install non-node dependancies: [GraphicsMagick](http://www.graphicsmagick.org/), [Cairo](http://cairographics.org/download/)
+5. `npm install` install dependancies
+6. `node app.js` runs a express site on [:3000](http://localhost:3000)
 
 ### print weather forecast
 
