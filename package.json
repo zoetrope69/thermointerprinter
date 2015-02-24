@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "internet connected thermal printer using node and arduino",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": {
+    "name": "Zac Colley",
+    "email": "hi@zaccolley.com",
+    "web": "http://zaccolley.com"
   },
   "repository": {
     "type": "git",
@@ -18,13 +20,13 @@
   "homepage": "https://github.com/zaccolley/thermointerprinter",
   "dependencies": {
     "express": "^4.11.1",
-    "express3-handlebars": "^0.5.2",
+    "express-handlebars": "^0.5.2",
     "gm": "^1.17.0",
     "redwrap": "0.0.4",
     "request": "^2.53.0",
     "serialport": "^1.4.10",
     "thermalprinter": "^0.1.0",
     "webshot": "^0.15.3",
-    "xml2js": "^0.4.5",
+    "xml2js": "^0.4.5"
   }
 }
