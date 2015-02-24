@@ -1,8 +1,23 @@
 {
-	"port": 3000,
+	"ports": {
+		"printer": 3030,
+		"scheduler": 3010
+	},
+
+	"printer": {
+		"usb": "/dev/ttyACM0",
+		"baudrate": 19200,
+		"options": {
+			"maxPrintingDots": 5,
+			"heatingTime": 150,
+			"heatingInterval": 200
+		}
+	},
+
 	"forecastio": {
 		"apiKey": ""
 	},
+
 	"lastfm": {
 		"username": "zaccolley",
 		"apiKey": "",

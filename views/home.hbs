@@ -87,7 +87,7 @@
 		$('.reddit-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?reddit=go',
+				url: '/print?type=reddit',
 				type: "POST"
 			}).done(function(data){
 				console.log('Reddit done!');
@@ -103,7 +103,7 @@
 		$('.space-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?space=go',
+				url: '/print?type=space',
 				type: "POST"
 			}).done(function(data){
 				console.log('How many people in space done!');
@@ -119,7 +119,7 @@
 		$('.onthisday-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?onthisday=go',
+				url: '/print?type=onthisday',
 				type: "POST"
 			}).done(function(data){
 				console.log('On this day done!');
@@ -135,7 +135,7 @@
 		$('.word-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?word=go',
+				url: '/print?type=word',
 				type: "POST"
 			}).done(function(data){
 				console.log('Word of the Day done!');
@@ -157,7 +157,7 @@
 			}
 
 			$.ajax({
-				url: '/?lastfm='+lastfm,
+				url: '/print?type=lastfm&username='+lastfm,
 				type: "POST"
 			}).done(function(data){
 				console.log('Last.FM done!');
@@ -175,7 +175,7 @@
 		$('.instagram-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?instagram=go',
+				url: '/print?type=instagram',
 				type: "POST"
 			}).done(function(data){
 				console.log('Instagram done!');
@@ -192,7 +192,7 @@
 		$('.weather-button').on('click', function(e){
 
 			$.ajax({
-				url: '/?weather=go',
+				url: '/print?type=weather',
 				type: "POST"
 			}).done(function(data){
 				console.log('Weather done!');
@@ -211,7 +211,7 @@
 				message = $('.message').val();
 
 			$.ajax({
-				url: '/?name='+ name +'&message='+ message,
+				url: '/message?name='+ name +'&message='+ message,
 				type: "POST"
 			}).done(function(data){
 				console.log('Message done!');

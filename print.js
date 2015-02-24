@@ -1,4 +1,8 @@
-var webshot = require('webshot');
+/* print.js
+ *
+ * helper functions for the printer
+ */
+
 
 module.exports = function(printer){
 
@@ -32,7 +36,7 @@ module.exports = function(printer){
             userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
         };
 
-        var imagePath = __dirname + '/public/images/processed/screenshot.png';
+        var imagePath = './public/images/processed/screenshot.png';
 
         webshot(url, imagePath, options, function(err){
             if (err) throw err;
@@ -56,33 +60,6 @@ module.exports = function(printer){
                 if (err) throw err;
 
                 console.log(imagePath);
-                callback();
-            });
-    }
-
-    function printMessage(data, callback){
-
-        var name = data.name || 'Anon',
-            message = data.message || '...',
-            time = data.time || moment().format('MMMM Do YYYY, h:mm:ss a');
-
-        printer
-            .bold(true)
-            .printLine("From: "+ name)
-            .bold(false)
-            .printLine(time)
-
-            .horizontalLine(32)
-            .printLine(message)
-
-            .lineFeed(2)
-            .print(function(err){
-                if (err) throw err;
-
-                console.log('From: '+ name);
-                console.log(time);
-                console.log('----------------------------');
-                console.log(message);
                 callback();
             });
     }
