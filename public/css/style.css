@@ -1,3 +1,23 @@
+.slabtexted .slabtext{
+    display: -moz-inline-box;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.slabtextinactive .slabtext{
+    display: inline;
+    white-space: normal;
+    font-size: 1em !important;
+    letter-spacing: inherit !important;
+    word-spacing: inherit !important;
+    *letter-spacing: 0 !important;
+    *word-spacing: 0 !important;
+}
+
+.slabtextdone .slabtext{
+    display: block;
+}
+
 *, *::before, *::after{
     padding: 0;
     margin: 0;
@@ -142,16 +162,6 @@ img{
     margin: 0 auto;
 }
 
-span{
-    display: block;
-
-    font-size: 1.5em;
-}
-
-span:last-child{
-    margin-bottom: .25em;
-}
-
 q{
     display: block;
     padding: .5em 0;
@@ -189,6 +199,10 @@ form input[type=submit]:hover{
     background: black;
     color: white;
     cursor: pointer;
+}
+
+.leaflet-control{
+    display: none !important;
 }
 
 /* specific styles */
@@ -301,14 +315,28 @@ form input[type=submit]:hover{
 }
 
 .word h1{
+    width: 100%;
+    display: block;
     margin: .25em 0;
-    padding: 1em;
+    padding: .75em .5em .5em;
 
+    font-family: 'Vibur', sans-serif;
+    font-weight: 600;
+    font-size: 5em;
+    line-height: .85;
     color: black;
+    text-align: center;
     text-transform: uppercase;
-    text-shadow: 0 2px 0 white, 0 4px 0 black, 0 6px white;
+    text-shadow: -1px 0 0 white, -2px 0 0 white, -3px 0 0 white,
+                  1px 0 0 white,  2px 0 0 white,  3px 0 0 white,
+                 0 -1px 0 white, 0 -2px 0 white, 0 -3px 0 white,
+                 0  1px 0 white, 0  2px 0 white, 0  3px 0 white;
 
     background: url('../images/diagonal_lines_bg.png');
+}
+
+.onthisday{
+    font-family: 'Kite One', sans-serif;
 }
 
 .onthisday .output{
@@ -317,6 +345,7 @@ form input[type=submit]:hover{
 
 .onthisday h1{
     padding-top: .25em;
+    text-transform: uppercase;
 }
 
 .onthisday .year{
@@ -342,4 +371,34 @@ form input[type=submit]:hover{
 .onthisday .info b,
 .onthisday .info a{
     line-height: 1em;
+}
+
+.sharks #map { height: 192px; }
+
+.sharks h1{
+    width: 100%;
+    display: block;
+
+    font-family: 'Trade Winds', sans-serif;
+    font-weight: 400;
+    text-align: center;
+}
+
+.sharks .closest{
+    margin: 2em 0 1em;
+
+    font-size: .85em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.sharks .gender {
+    display: inline-block;
+
+    font-size: 25px;
+    line-height: 1em;
+    text-shadow: -1px 0 0 black, 1px 0 0 black,
+                 0 1px 0 black, 0 -1px 0 black;
+
+    transform: translateY(-5px);
 }

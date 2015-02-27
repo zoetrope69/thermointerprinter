@@ -13,6 +13,7 @@ module.exports = function (app, config){
         'message',
         'onthisday',
         'reddit',
+        'sharks',
         'space',
         'weather',
         'word',

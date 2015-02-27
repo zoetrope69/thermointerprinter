@@ -11,7 +11,7 @@ module.exports = function(app, config){
         console.log('Printing instagram');
 
         var input = './public/images/instagram.jpg',
-            output = '/images/processed/dithered.jpg';
+            output = '/images/processed/instagram--dithered.jpg';
 
         gm(input)
             .resize(384, 384)

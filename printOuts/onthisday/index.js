@@ -48,7 +48,7 @@ module.exports = function(app, config){
                             info = item.substring(item.indexOf(seperator) + seperator.length);
 
                         // Remove (pictured) from the text, as no pictures are printed
-                        // info = info.replace(' (pictured)', '');
+                        info = info.replace('(pictured)', '');
 
                         returnArr.push({
                             year: year, // Add the year

@@ -83,11 +83,13 @@
 
 	$(document).ready(function(){
 
+		var host = 'http://localhost:3030';
+
 		// reddit
 		$('.reddit-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=reddit',
+				url: host + '/print/reddit',
 				type: "POST"
 			}).done(function(data){
 				console.log('Reddit done!');
@@ -103,7 +105,7 @@
 		$('.space-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=space',
+				url: host + '/print/space',
 				type: "POST"
 			}).done(function(data){
 				console.log('How many people in space done!');
