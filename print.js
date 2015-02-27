@@ -2,12 +2,11 @@
  *
  * helper functions for the printer
  */
-
+var webshot = require('webshot');
 
 module.exports = function(printer){
 
     return{
-        message: printMessage,
         text: printText,
         image: printImage,
         url: printUrl

@@ -121,7 +121,7 @@
 		$('.onthisday-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=onthisday',
+				url: host + '/print/onthisday',
 				type: "POST"
 			}).done(function(data){
 				console.log('On this day done!');
@@ -137,7 +137,7 @@
 		$('.word-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=word',
+				url: host + '/print/word',
 				type: "POST"
 			}).done(function(data){
 				console.log('Word of the Day done!');
@@ -159,7 +159,7 @@
 			}
 
 			$.ajax({
-				url: '/print?type=lastfm&username='+lastfm,
+				url: host + '/print/lastfm?username='+lastfm,
 				type: "POST"
 			}).done(function(data){
 				console.log('Last.FM done!');
@@ -177,7 +177,7 @@
 		$('.instagram-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=instagram',
+				url: host + '/print/instagram',
 				type: "POST"
 			}).done(function(data){
 				console.log('Instagram done!');
@@ -194,7 +194,7 @@
 		$('.weather-button').on('click', function(e){
 
 			$.ajax({
-				url: '/print?type=weather',
+				url: host + '/print/weather',
 				type: "POST"
 			}).done(function(data){
 				console.log('Weather done!');
@@ -213,7 +213,7 @@
 				message = $('.message').val();
 
 			$.ajax({
-				url: '/message?name='+ name +'&message='+ message,
+				url: host + '/print/message?name='+ name +'&message='+ message,
 				type: "POST"
 			}).done(function(data){
 				console.log('Message done!');
