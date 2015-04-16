@@ -13,14 +13,14 @@ module.exports = function(app, config){
 
         LastFmNode = require('lastfm').LastFmNode,
         lastfm = new LastFmNode({
-            api_key: config.lastfm.apiKey,    // sign-up for a key at http://www.last.fm/api
-            secret: config.lastfm.secret,
+            api_key: process.env.LASTFM_API,    // sign-up for a key at http://www.last.fm/api
+            secret:  process.env.LASTFM_SECRET,
             useragent: 'thermointerprinter'
         });
 
     app.get('/lastfm', function(req, res){
         console.log('Username via param:', req.query.username);
-        var username = req.query.username || config.lastfm.username;
+        var username = req.query.username ||  process.env.LASTFM_USER;
 
         console.log(username);
 

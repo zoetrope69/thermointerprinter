@@ -8,7 +8,7 @@ module.exports = function(app, config){
     var moment = require('moment'), // time
 
         Forecast = require('forecast.io'),
-        forecast = new Forecast({ APIKey: config.forecastio.apiKey });
+        forecast = new Forecast({ APIKey:  process.env.FORECASTIO_API });
 
     app.get('/weather', function(req, res) {
 
@@ -18,7 +18,7 @@ module.exports = function(app, config){
         };
 
         getWeatherForecast(location, function(days){
-            
+
             res.render(__dirname, {
                 title: 'Weather',
                 time: moment().format('MMM D YYYY H:mm'),
