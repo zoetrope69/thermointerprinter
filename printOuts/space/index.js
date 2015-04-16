@@ -3,7 +3,7 @@
  * prints out who's in space right now
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'), // time
 
@@ -35,7 +35,7 @@ module.exports = function(app, config){
                     number: spaceData.number,
                     people: spaceData.people
                 });
-                
+
             }
         });
 

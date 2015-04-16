@@ -3,7 +3,7 @@
  * prints out a message from the website
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'); // time
 

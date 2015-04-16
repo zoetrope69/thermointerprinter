@@ -3,7 +3,7 @@
  * prints out current playing lastfm track
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'), // time
 

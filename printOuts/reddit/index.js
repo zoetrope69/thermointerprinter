@@ -3,7 +3,7 @@
  * prints out a hot TIL post from reddit
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'), // time
 

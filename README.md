@@ -19,7 +19,3 @@ __a lot of stuff based on little printer form berg__
 4. Install non-node dependancies: [GraphicsMagick](http://www.graphicsmagick.org/), [Cairo](http://cairographics.org/download/), Pango
 5. `npm install` install dependancies
 6. `foreman start` runs a express site
-
-### print weather forecast
-
-You'll need to add your API key to the config file which you can [get from the forecast.io developer site](https://developer.forecast.io/).

@@ -3,7 +3,7 @@
  * main routing file
  */
 
-module.exports = function (app, config, print){
+module.exports = function (app, print){
 
     var moment = require('moment'); // time
 
@@ -22,7 +22,7 @@ module.exports = function (app, config, print){
     for(var i = 0; i < routes.length; i++){
         var route = routes[i];
 
-        require(__dirname +'/'+ route)(app, config);
+        require(__dirname +'/'+ route)(app);
     }
 
     app.get('/', function (req, res) {

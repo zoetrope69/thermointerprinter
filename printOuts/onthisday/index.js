@@ -3,7 +3,7 @@
  * prints out what happened on this day in history
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'), // time
 

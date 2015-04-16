@@ -3,7 +3,7 @@
  * prints out the word of the day
  */
 
-module.exports = function(app, config){
+module.exports = function(app){
 
     var moment = require('moment'), // time
 

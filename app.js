@@ -12,12 +12,12 @@ app.engine('.hbs', exphbs({
 );
 app.set('view engine', '.hbs');
 
-startServer(app, config, function(err){
+startServer(app, function(err){
 	if (err) throw err;
 	console.log('App ready...');
 });
 
-function startServer(app, config, callback){
+function startServer(app, callback){
 
 	var server = app.listen(3030, function(){
 
@@ -27,7 +27,7 @@ function startServer(app, config, callback){
 		console.log('App listening at http://%s:%s', host, 3030);
 
 		// route files from printOuts/index.js
-		require('./printOuts')(app, config);
+		require('./printOuts')(app);
 
 		callback();
 

@@ -3,7 +3,7 @@
  * main routing file
  */
 
-module.exports = function (app, config, print){
+module.exports = function (app, print){
 
     var moment = require('moment'); // time
 
@@ -22,7 +22,7 @@ module.exports = function (app, config, print){
     app.post('/print/:type', function(req, res){
 
         var type = req.params.type;
-            rootPath = 'http://localhost:'+config.ports.scheduler+'/';
+            rootPath = 'http://localhost:3030/';
 
         // if valid route
         if(inArray(type, routes)){
