@@ -22,7 +22,10 @@ module.exports = function(app, config){
         console.log('Username via param:', req.query.username);
         var username = req.query.username || config.lastfm.username;
 
+        console.log(username);
+
         var trackStream = lastfm.stream(username);
+        console.log(trackStream);
 
         trackStream.on('nowPlaying', function(track){
             console.log('Paused track stream');

@@ -5,229 +5,32 @@
 
 <div class="alert"></div>
 
-<h2>Send a message</h2>
+<a href="/lastfm?username=zaccolley"><h2>Last.FM</h2></a>
 
-<form>
+<hr>
 
-	<label for="name">From</label>
-	<input class="name" type="text" name="name" placeholder="Anon"/>
+<a href="/instagram"><h2>Instagram</h2></a>
 
-	<label for="message">Message</label>
-	<textarea class="message" type="text" name="message" placeholder="..."></textarea>
+<hr>
 
-	<input class="message-button" type="submit" value="Send message">
+<a href="/word"><h2>Word of the Day</h2></a>
 
-</form>
+<hr>
 
-<h2>Last.FM</h2>
+<a href="/onthisday"><h2>On this day</h2></a>
 
-<form>
+<hr>
 
-	<label for="lastfm">Username</label>
-	<input class="lastfm" type="text" name="lastfm" placeholder="zaccolley"/>
-	<input class="lastfm-button" type="submit" value="Print latest song from Last.FM">
+<a href="/reddit"><h2>TIL</h2></a>
 
-</form>
+<hr>
 
-<h2>Instagram</h2>
+<a href="/space"><h2>How many people in space?</h2></a>
 
-<form>
+<hr>
 
-	<input class="instagram-button" type="submit" value="Print a Instagram post">
+<a href="/weather"><h2>Weather</h2></a>
 
-</form>
+<hr>
 
-<h2>Word of the Day</h2>
-
-<form>
-
-	<input class="word-button" type="submit" value="Print the word of the day">
-
-</form>
-
-<h2>On this day</h2>
-
-<form>
-
-	<input class="onthisday-button" type="submit" value="Print what happened on this day">
-
-</form>
-
-<h2>TIL</h2>
-
-<form>
-
-	<input class="reddit-button" type="submit" value="Print something someone learned today">
-
-</form>
-
-<h2>How many people in space?</h2>
-
-<form>
-
-	<input class="space-button" type="submit" value="Print how many people in space">
-
-</form>
-
-
-<h2>Weather</h2>
-
-<form>
-
-	<input class="weather-button" type="submit" value="Print the weather">
-
-</form>
-
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script>
-
-	$(document).ready(function(){
-
-		var host = 'http://localhost:3030';
-
-		// reddit
-		$('.reddit-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/reddit',
-				type: "POST"
-			}).done(function(data){
-				console.log('Reddit done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// space
-		$('.space-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/space',
-				type: "POST"
-			}).done(function(data){
-				console.log('How many people in space done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// onthisday
-		$('.onthisday-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/onthisday',
-				type: "POST"
-			}).done(function(data){
-				console.log('On this day done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// word
-		$('.word-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/word',
-				type: "POST"
-			}).done(function(data){
-				console.log('Word of the Day done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// lastfm
-		$('.lastfm-button').on('click', function(e){
-
-			var lastfm = $('.lastfm').val();
-
-			if(lastfm === ''){
-				lastfm = $('.lastfm').attr('placeholder');
-			}
-
-			$.ajax({
-				url: host + '/print/lastfm?username='+lastfm,
-				type: "POST"
-			}).done(function(data){
-				console.log('Last.FM done!');
-
-				$('.lastfm').val('');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// instagram
-		$('.instagram-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/instagram',
-				type: "POST"
-			}).done(function(data){
-				console.log('Instagram done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-
-		// weather
-		$('.weather-button').on('click', function(e){
-
-			$.ajax({
-				url: host + '/print/weather',
-				type: "POST"
-			}).done(function(data){
-				console.log('Weather done!');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-		// message
-		$('.message-button').on('click', function(e){
-
-			var name = $('.name').val(),
-				message = $('.message').val();
-
-			$.ajax({
-				url: host + '/print/message?name='+ name +'&message='+ message,
-				type: "POST"
-			}).done(function(data){
-				console.log('Message done!');
-
-				$('.name').val('');
-				$('.message').val('');
-
-				$('.alert').html(data);
-			});
-
-			e.preventDefault();
-
-		});
-
-	});
-
-</script>
+<a href="/sharks"><h2>Sharks</h2></a>
