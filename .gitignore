@@ -1,8 +1,5 @@
 # node
 node_modules/
 
-# config
-config.json
-
 # processed images
 public/images/processed/

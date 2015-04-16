@@ -1,6 +1,4 @@
-var config = require('./config.json'),
-
-	express = require('express'),
+var express = require('express'),
 	app = express(),
 	exphbs  = require('express-handlebars');
 
