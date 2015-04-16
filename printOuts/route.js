@@ -22,7 +22,7 @@ module.exports = function (app, print){
     app.post('/print/:type', function(req, res){
 
         var type = req.params.type;
-            rootPath = 'http://localhost:3030/';
+            rootPath = 'http://localhost:'+app.get('port')+'/';
 
         // if valid route
         if(inArray(type, routes)){
