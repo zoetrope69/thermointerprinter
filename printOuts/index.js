@@ -3,7 +3,7 @@
  * main routing file
  */
 
-module.exports = function (app, print){
+module.exports = function (app){
 
     var moment = require('moment'); // time
 

@@ -55,6 +55,7 @@ a:hover{
 
 .paper-wrapper{
     max-width: 441px; /* max width of thermal paper */
+    min-height: 480px;
     margin: 1em auto;
 
     background: white;

@@ -29,8 +29,7 @@ function startServer(app, callback){
 
 		// route files from printOuts/index.js
 		require('./printOuts')(app);
-
-		callback();
+        require('./printOuts/route')(app);
 
 	});
 

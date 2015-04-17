@@ -5,7 +5,8 @@
 
 module.exports = function (app, print){
 
-    var moment = require('moment'); // time
+    var moment = require('moment'), // time
+        webshot = require('webshot');
 
     var routes = [
         'instagram',
@@ -19,7 +20,7 @@ module.exports = function (app, print){
         'word',
     ];
 
-    app.post('/print/:type', function(req, res){
+    app.get('/print/:type', function(req, res){
 
         var type = req.params.type;
             rootPath = 'http://localhost:'+app.get('port')+'/';
@@ -31,7 +32,7 @@ module.exports = function (app, print){
 
                 case('message'):
 
-                    print.url(rootPath+'message?name='+req.query.name+'&message='+req.query.message, function(){
+                    printUrl(rootPath+'message?name='+req.query.name+'&message='+req.query.message, function(){
                         res.send('Message printed!');
                     });
 
@@ -39,7 +40,7 @@ module.exports = function (app, print){
 
                 case('lastfm'):
 
-                    print.url(rootPath+'lastfm?username='+req.query.username, function(){
+                    printUrl(rootPath+'lastfm?username='+req.query.username, function(){
                         res.send('Last.FM song printed!');
                     });
 
@@ -47,7 +48,7 @@ module.exports = function (app, print){
 
                 default:
 
-                    print.url(rootPath + type, function(){
+                    printUrl(rootPath + type, function(){
                         res.send(type + ' printed!');
                     });
 
@@ -62,5 +63,41 @@ module.exports = function (app, print){
         }
 
     });
+
+    function printUrl(url, callback){
+
+        var options = {
+
+            screenSize: {
+                width: 384,
+                height: 480
+            },
+
+            shotSize: {
+                width: 'window',
+                height: 'all'
+            },
+
+            streamType: 'png',
+
+            defaultWhiteBackground: true,
+
+            quality: 100,
+
+            userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
+        };
+
+        var imagePath = './public/images/processed/screenshot.png';
+
+        webshot(url, imagePath, options, function(err){
+            if (err) throw err;
+
+            console.log('Saved screenshot!');
+
+            console.log('Finished printing');
+            callback();
+        });
+
+    }
 
 };
