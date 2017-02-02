@@ -1,5 +1,7 @@
 # thermointerprinter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zaccolley/thermointerprinter.svg)](https://greenkeeper.io/)
+
 internet connected thermal printer using node and an arduino
 
 __a lot of stuff based on little printer form berg__
